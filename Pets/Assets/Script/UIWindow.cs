@@ -1,10 +1,15 @@
 using DG.Tweening;
 using NaughtyAttributes;
+using TMPro.Examples;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIWindow : MonoBehaviour
 {
+    [Header("Data")]
+    [SerializeField] private string _id;
+
+    [Header("UI Settings")]
     [SerializeField] private RectTransform _canvasRectTransform;
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private bool _hideStart;
@@ -15,6 +20,13 @@ public class UIWindow : MonoBehaviour
 
     [SerializeField] private Ease _showEase;
     [SerializeField] private Ease _hideEase;
+
+    public CanvasGroup canvasGroup => _canvasGroup;
+    public RectTransform canvasRectTransform => _canvasRectTransform;
+
+    public string id => _id;
+
+
     void Start()
     {
         Initialized();
@@ -23,11 +35,10 @@ public class UIWindow : MonoBehaviour
     {
         if (_hideStart)
         {
-            Hide();
+            Hide(true);
         }
     }
-    #region text
-    [Button]
+
 
     public virtual void Show(bool instance = false)
     {
@@ -43,9 +54,7 @@ public class UIWindow : MonoBehaviour
         }
 
     }
-    #endregion
-    #region text 
-    [Button]
+    
     public virtual void Hide(bool instance = false)
     {
         if (instance)
@@ -58,5 +67,5 @@ public class UIWindow : MonoBehaviour
             rectTransform.DOScale(Vector3.zero, _hideDuration).SetEase(_hideEase).OnComplete(() => _canvasRectTransform.gameObject.SetActive(false));
         }
     }
-    #endregion
+
 }
