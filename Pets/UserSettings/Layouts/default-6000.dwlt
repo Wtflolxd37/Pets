@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 43
+    y: 0
     width: 1920
     height: 36
   m_SerializedDataModeController:
@@ -568,8 +568,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1487
-    y: 79
+    x: 1075
+    y: 24
     width: 432
     height: 915
   m_SerializedDataModeController:
@@ -623,7 +623,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 79
+    y: 24
     width: 412
     height: 915
   m_SerializedDataModeController:
@@ -696,8 +696,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 413
-    y: 79
+    x: 1
+    y: 24
     width: 1072
     height: 603
   m_SerializedDataModeController:
@@ -1188,9 +1188,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 2304.1516, y: 582.52136, z: -0.7218041}
+    m_Target: {x: 475.23407, y: 252.39905, z: -3.2647877}
     speed: 2
-    m_Value: {x: 359.77332, y: 1584.5825, z: -9.504143}
+    m_Value: {x: 2304.1516, y: 582.52136, z: -0.7218041}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1241,9 +1241,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 1503.498
+    m_Target: 577.7518
     speed: 2
-    m_Value: 1351.6326
+    m_Value: 1503.498
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1325,7 +1325,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1026, y: 2622}
+  m_TargetSize: {x: 1072, y: 582}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1334,16 +1334,16 @@ MonoBehaviour:
   m_VSyncEnabled: 1
   m_Gizmos: 0
   m_Stats: 0
-  m_SelectedSizes: 07000000000000000000000011000000000000000000000000000000000000000000000000000000
+  m_SelectedSizes: 06000000000000000000000011000000000000000000000000000000000000000000000000000000
   m_ZoomArea:
     m_HRangeLocked: 0
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -513
-    m_HBaseRangeMax: 513
-    m_VBaseRangeMin: -1311
-    m_VBaseRangeMax: 1311
+    m_HBaseRangeMin: -536
+    m_HBaseRangeMax: 536
+    m_VBaseRangeMin: -291
+    m_VBaseRangeMax: 291
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1363,7 +1363,7 @@ MonoBehaviour:
       y: 21
       width: 1072
       height: 582
-    m_Scale: {x: 0.22196797, y: 0.22196797}
+    m_Scale: {x: 1, y: 1}
     m_Translation: {x: 536, y: 291}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -1371,12 +1371,12 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -2414.763
-      y: -1311
-      width: 4829.526
-      height: 2622
+      x: -536
+      y: -291
+      width: 1072
+      height: 582
     m_MinimalGUI: 1
-  m_defaultScale: 0.22196797
+  m_defaultScale: 1
   m_LastWindowPixelSize: {x: 1072, y: 603}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
@@ -1405,8 +1405,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Project\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 413
-    y: 708
+    x: 1
+    y: 653
     width: 1072
     height: 286
   m_SerializedDataModeController:
@@ -1457,10 +1457,13 @@ MonoBehaviour:
       m_rawData: 0
     m_ExpandedIDs:
     - m_rawData: 0
-    - m_rawData: 568105584918843986
-    - m_rawData: 568105584918843988
-    - m_rawData: 568105584918843990
-    - m_rawData: 568105584918844142
+    - m_rawData: 568105584918842582
+    - m_rawData: 568105584918844272
+    - m_rawData: 568105584918844274
+    - m_rawData: 568105584918844276
+    - m_rawData: 568105584918844278
+    - m_rawData: 568105584918844280
+    - m_rawData: 568105584918844282
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1494,11 +1497,13 @@ MonoBehaviour:
       m_rawData: 0
     m_ExpandedIDs:
     - m_rawData: 0
-    - m_rawData: 568105584918843722
-    - m_rawData: 568105584918843986
-    - m_rawData: 568105584918843988
-    - m_rawData: 568105584918843990
-    - m_rawData: 568105584918844142
+    - m_rawData: 568105584918842582
+    - m_rawData: 568105584918844272
+    - m_rawData: 568105584918844274
+    - m_rawData: 568105584918844276
+    - m_rawData: 568105584918844278
+    - m_rawData: 568105584918844280
+    - m_rawData: 568105584918844282
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

@@ -7,9 +7,20 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private List<UIWindow> _uiWindow;
     public List<UIWindow> UIWindow => _uiWindow;
+    public static UIManager Instance { get; private set; }
     void Start()
     {
         
+    }
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
     }
     public void ShowWindow(string windowName)
     {
