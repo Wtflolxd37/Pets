@@ -1,6 +1,5 @@
 using DG.Tweening;
 using NaughtyAttributes;
-using TMPro.Examples;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -31,7 +30,7 @@ public class UIWindow : MonoBehaviour
     {
         Initialized();
     }
-    public void Initialized()
+    public virtual void Initialized()
     {
         if (_hideStart)
         {
