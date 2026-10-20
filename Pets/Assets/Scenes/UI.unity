@@ -179,6 +179,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4268951609260279129, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
+      propertyPath: _volumeSFXSlider
+      value: 
+      objectReference: {fileID: 1075171790}
+    - target: {fileID: 4268951609260279129, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
+      propertyPath: _volumeMusicSlider
+      value: 
+      objectReference: {fileID: 1034869220}
     - target: {fileID: 5662519690584498990, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
       propertyPath: m_Name
       value: SettingsUI
@@ -189,11 +197,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7245073188814751670, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 797.955
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7245073188814751670, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1780.211
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7245073188814751670, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
       propertyPath: m_LocalPosition.z
@@ -415,6 +423,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1034869220 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 200684390652780218, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
+  m_PrefabInstance: {fileID: 78671905}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &1035477363
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +598,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5874f956f8980134da592c3b1f10402e, type: 3}
+--- !u!114 &1075171790 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1428213219544411702, guid: 3015e8f2e53da764e855cafe06a9ab25, type: 3}
+  m_PrefabInstance: {fileID: 78671905}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1001 &1766825054
 PrefabInstance:
   m_ObjectHideFlags: 0

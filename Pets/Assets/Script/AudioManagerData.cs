@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Ale.Utility.Audio
+namespace Dino.Utility.Audio
 {
     [CreateAssetMenu(fileName = "AudioManagerData", menuName = "DINO/Audio/AudioManagerData", order = 0)]
     public class AudioManagerData : ScriptableObject

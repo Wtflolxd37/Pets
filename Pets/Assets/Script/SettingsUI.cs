@@ -1,30 +1,33 @@
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using Dino.Utility.Audio;
+using UnityEngine.Rendering;
+using AudioType = Dino.Utility.Audio.AudioType;
 
 public class SettingsUI : UIWindow
 {
     [Header("SettingsUI")]
-    [SerializeField] private Slider _volumeSlider;
-    [SerializeField] private Slider _soundSlider;
+    [SerializeField] private Slider _volumeSFXSlider;
+    [SerializeField] private Slider _volumeMusicSlider;
 
 
     public override void Initialized()
     {
         base.Initialized();
-        _volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
-        _soundSlider.onValueChanged.AddListener(OnSoundChanged);
+        _volumeMusicSlider.onValueChanged.AddListener(OnVolumeMusicChanges);
+        _volumeSFXSlider.onValueChanged.AddListener(OnVolumeSFXChanged);
 
     }
 
-    private void OnVolumeChanged(float value)
+    private void OnVolumeMusicChanges(float value)
     {
-        Debug.Log($"Volume changed to: {value}");
+        Debug.Log($"Volume changed SFX to: {value}");
     }
 
-    private void OnSoundChanged(float value)
+    private void OnVolumeSFXChanged(float value)
     {
-        Debug.Log($"Sound changed to: {value}");
+        Debug.Log($"Sound changed Muisc to: {value}");
     }
 
     [Button("Test Show")]

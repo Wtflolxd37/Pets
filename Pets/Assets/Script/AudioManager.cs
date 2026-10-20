@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
-using Ale.Utility.Audio;
+using Dino.Utility.Audio;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
-using AudioType = Ale.Utility.Audio.AudioType;
+using AudioType = Dino.Utility.Audio.AudioType;
 
-namespace Ale.Utility.Audio
+namespace Dino.Utility.Audio
 {
 
     public class AudioManager : MonoBehaviour
@@ -197,7 +197,7 @@ namespace Ale.Utility.Audio
     }
 }
 
-namespace Ale.Utility.Audio
+namespace Dino.Utility.Audio
 {
     public enum AudioType
     {
