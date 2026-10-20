@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3fd95c084ce03646954160a7da77fee, type: 3}
+  m_Name: Click
+  m_EditorClassIdentifier: Assembly-CSharp::Ale.Utility.Audio.AudioManagerData
+  _sfxAudioMixerGroup: {fileID: 0}
+  _sfxVolumeParameterName: SFXVolume
+  _musicAudioMixerGroup: {fileID: 0}
+  _musicVolumeParameterName: MusicVolume
+  _ambienceAudioMixerGroup: {fileID: 0}
+  _ambienceVolumeParameterName: AmbienceVolume
+  audioData:
+  - name: 
+    clip: {fileID: 0}
+    loop: 0
+    volume: 0
+    pitch: 0
+    audioType: 0
+  - name: 
+    clip: {fileID: 0}
+    loop: 0
+    volume: 0
+    pitch: 0
+    audioType: 1
+  - name: 
+    clip: {fileID: 0}
+    loop: 0
+    volume: 0
+    pitch: 0
+    audioType: 2
