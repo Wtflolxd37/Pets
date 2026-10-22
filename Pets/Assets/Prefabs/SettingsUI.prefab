@@ -434,8 +434,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.00010681152}
+  m_SizeDelta: {x: 150, y: 0.000030518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8093870105267193257
 CanvasRenderer:
@@ -1492,8 +1492,8 @@ MonoBehaviour:
   _hideDuration: 0.5
   _showEase: 26
   _hideEase: 27
-  _volumeSlider: {fileID: 0}
-  _soundSlider: {fileID: 0}
+  _volumeSFXSlider: {fileID: 0}
+  _volumeMusicSlider: {fileID: 0}
 --- !u!1 &6065087160853715039
 GameObject:
   m_ObjectHideFlags: 0

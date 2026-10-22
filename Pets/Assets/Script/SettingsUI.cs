@@ -20,14 +20,17 @@ public class SettingsUI : UIWindow
 
     }
 
-    private void OnVolumeMusicChanges(float value)
+    private void OnVolumeMusicChanges(float volume)
     {
-        Debug.Log($"Volume changed SFX to: {value}");
+        Debug.Log($"Volume changed SFX to: {volume}");
+        AudioManager.Instance.UpdateAudioMixerGroupVolume(volume, AudioType.Music);
+        
     }
 
     private void OnVolumeSFXChanged(float value)
     {
         Debug.Log($"Sound changed Muisc to: {value}");
+        AudioManager.Instance.UpdateAudioMixerGroupVolume(value, AudioType.SFX);
     }
 
     [Button("Test Show")]
