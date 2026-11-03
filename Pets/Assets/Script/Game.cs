@@ -3,11 +3,14 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
     public TextMeshProUGUI money;
     private float _counter = 1;
+    private int _cost;
     private int _moneyCurrent = 0;
     private TimerBase time;
     private void Start()
@@ -15,7 +18,7 @@ public class Game : MonoBehaviour
         time = GetComponent<TimerBase>();
         Container();
     }
-    public void FixedUpdate()
+    public void Update()
     {
         money.text = _moneyCurrent.ToString();
     }
@@ -34,11 +37,10 @@ public class Game : MonoBehaviour
 
     public void Purchase()
     {
-        int cost;
-        if(_moneyCurrent >= 50f)
+        if(_moneyCurrent >= 50)
         {
-            cost = 50;
-            _moneyCurrent -= cost;
+            _cost = 50;
+            _moneyCurrent -= _cost;
         }
         else { Debug.Log("No se puede comprar"); }
     }
