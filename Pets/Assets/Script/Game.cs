@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     private int _cost;
     private int _moneyCurrent = 0;
     private TimerBase time;
+
     private void Start()
     {
         time = GetComponent<TimerBase>();
@@ -22,6 +23,7 @@ public class Game : MonoBehaviour
     {
         money.text = _moneyCurrent.ToString();
     }
+
     public void Container()
     {
         time.StartLoopTimer(_counter, "", true, 1f);
@@ -32,7 +34,12 @@ public class Game : MonoBehaviour
     public void AddCoins(float time)
     {
         _moneyCurrent += 1;
-        Debug.Log(_moneyCurrent);    
+        Debug.Log(_moneyCurrent);
+    }
+
+    public void RecoletCoins()
+    {
+        _moneyCurrent++;
     }
 
     public void Purchase()
@@ -44,4 +51,5 @@ public class Game : MonoBehaviour
         }
         else { Debug.Log("No se puede comprar"); }
     }
+
 }
