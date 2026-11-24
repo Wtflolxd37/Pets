@@ -1,55 +1,144 @@
 using Dino.Utils;
-using NUnit.Framework;
-using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
-    public TextMeshProUGUI money;
-    private float _counter = 1;
-    private int _cost;
-    private int _moneyCurrent = 0;
+    [Header("Dinero")]
+    [SerializeField] private TextMeshProUGUI money;
+
+    [Header("Sistema de mascotas")]
+    [SerializeField] private PetManager petManager;
+
+    private int _moneyCurrent;
     private TimerBase time;
 
     private void Start()
     {
         time = GetComponent<TimerBase>();
-        Container();
-    }
-    public void Update()
-    {
-        money.text = _moneyCurrent.ToString();
+
+        if (time == null)
+        {
+            Debug.LogError("No se encontro TimerBase");
+            enabled = false;
+            return;
+        }
+
+        LoadProgress();
+
+        time.OnTimerLoop += AddCoins;
+
+        time.StartLoopTimer(
+            petManager.GetTimerInterval(),
+            "",
+            true,
+            1f
+        );
+
+        UpdateUI();
     }
 
-    public void Container()
+    // GANANCIAS AUTOMATICAS
+    private void AddCoins()
     {
-        time.StartLoopTimer(_counter, "", true, 1f);
-        Debug.Log($"{_counter}");
-        time.OnTimerUpdate += AddCoins;
+        int income = petManager.GetTotalPassiveIncome();
+
+        _moneyCurrent = SafeAdd(_moneyCurrent, income);
+
+        SaveProgress();
+        UpdateUI();
     }
 
-    public void AddCoins(float time)
-    {
-        _moneyCurrent += 1;
-        Debug.Log(_moneyCurrent);
-    }
-
+    // GANANCIAS POR CLIC
     public void RecoletCoins()
     {
-        _moneyCurrent++;
+        int clickValue = petManager.GetClickValue();
+
+        _moneyCurrent = SafeAdd(_moneyCurrent, clickValue);
+
+        SaveProgress();
+        UpdateUI();
     }
 
-    public void Purchase()
+    // COMPRAR UTILIZANDO MONEDAS
+    public bool TrySpendCoins(int amount)
     {
-        if(_moneyCurrent >= 50)
+        if (amount <= 0 || _moneyCurrent < amount)
         {
-            _cost = 50;
-            _moneyCurrent -= _cost;
+            Debug.Log("No tienes suficientes monedas");
+            return false;
         }
-        else { Debug.Log("No se puede comprar"); }
+
+        _moneyCurrent -= amount;
+
+        SaveProgress();
+        UpdateUI();
+
+        return true;
     }
 
+    // CAMBIAR VELOCIDAD DEL TEMPORIZADOR
+    public void RefreshTimer()
+    {
+        if (time != null && petManager != null)
+        {
+            time.ChangeLoopTimer((float)petManager.GetTimerInterval());
+        }
+    }
+
+    // ACTUALIZAR INTERFAZ
+    public void UpdateUI()
+    {
+        if (money != null)
+            money.text = _moneyCurrent.ToString("N0");
+    }
+
+    private int SafeAdd(int current, int amount)
+    {
+        return (int)Mathf.Clamp(
+            (float)current + amount,
+            0f,
+            int.MaxValue
+        );
+    }
+
+    // GUARDAR DINERO
+    private void SaveProgress()
+    {
+        PlayerPrefs.SetInt("Clicker_Money", _moneyCurrent);
+        PlayerPrefs.Save();
+    }
+
+    // CARGAR DINERO
+    private void LoadProgress()
+    {
+        _moneyCurrent = PlayerPrefs.GetInt(
+            "Clicker_Money",
+            0
+        );
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveProgress();
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+            SaveProgress();
+    }
+
+    private void OnDestroy()
+    {
+        if (time != null)
+            time.OnTimerLoop -= AddCoins;
+    }
+
+    public void CambiarEscena(int nScenas)
+    {
+
+        SceneManager.LoadScene(nScenas);
+    }
 }

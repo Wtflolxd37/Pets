@@ -34,13 +34,13 @@ public class SettingsUI : UIWindow
     }
 
     [Button("Test Show")]
-    private void TestShow()
+    public void TestShow()
     {
         Show();
     }
 
     [Button("Test Hide")]
-    private void TestHide()
+    public void TestHide()
     {
         Hide();
     }

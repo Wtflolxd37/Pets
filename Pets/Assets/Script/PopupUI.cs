@@ -7,17 +7,27 @@ public class PopupUI : UIWindow
     #region Test
 
     [Button]
-    private void ShowTest()
+    public void ShowTest()
     {
         Show();
     }
 
     [Button]
-    private void HideTest()
+    public void HideTest()
     {
         Hide();
     }
 
 
     #endregion
+
+    public void OnCrdits()
+    {
+        Show();
+    }
+
+    public void OffCredits()
+    {
+        Hide();
+    }
 }
