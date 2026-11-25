@@ -189,6 +189,33 @@ public class PetManager : MonoBehaviour
         return category >= 0 && category < TOTAL_CATEGORIES;
     }
 
+    private bool IsCategoryCompleted(int category)
+    {
+        return petsBought[category] >= PETS_PER_CATEGORY &&
+               speedLevels[category] >= MAX_UPGRADE_LEVEL &&
+               clickLevels[category] >= MAX_UPGRADE_LEVEL &&
+               incomeLevels[category] >= MAX_UPGRADE_LEVEL;
+    }
+
+    private void CheckCategoryUnlock(int category)
+    {
+        if (category >= TOTAL_CATEGORIES - 1)
+            return;
+
+        if (IsCategoryCompleted(category))
+        {
+            unlockedCategories = Mathf.Max(
+                unlockedCategories,
+                category + 2
+            );
+
+            Debug.Log("¡Categoría " + (category + 2) + " desbloqueada!");
+
+            SaveProgress();
+            UpdateAllCategories();
+        }
+    }
+
     // Comprar la siguiente mascota de una categoria.
     public void BuyNextPet(int category)
     {
@@ -218,16 +245,7 @@ public class PetManager : MonoBehaviour
         petsBought[category]++;
 
         // Desbloquear solamente la siguiente categoria.
-        if (petsBought[category] == PETS_PER_CATEGORY &&
-            category < TOTAL_CATEGORIES - 1)
-        {
-            unlockedCategories = category + 2;
-
-            Debug.Log(
-                "¡Se ha desbloqueado la categoria " +
-                (category + 2) + "!"
-            );
-        }
+        CheckCategoryUnlock(category);
 
         SaveProgress();
         UpdateAllCategories();
@@ -250,6 +268,7 @@ public class PetManager : MonoBehaviour
             return;
 
         speedLevels[category]++;
+        CheckCategoryUnlock(category);
 
         SaveProgress();
         UpdateAllCategories();
@@ -272,6 +291,7 @@ public class PetManager : MonoBehaviour
             return;
 
         clickLevels[category]++;
+        CheckCategoryUnlock(category);
 
         SaveProgress();
         UpdateAllCategories();
@@ -293,6 +313,7 @@ public class PetManager : MonoBehaviour
             return;
 
         incomeLevels[category]++;
+        CheckCategoryUnlock(category);
 
         SaveProgress();
         UpdateAllCategories();
@@ -393,9 +414,13 @@ public class PetManager : MonoBehaviour
         if (ui.lockOverlay != null)
             ui.lockOverlay.SetActive(!unlocked);
 
-        // Boton para entrar.
+        // Botón para entrar a la categoría.
         if (ui.enterButton != null)
         {
+            ui.enterButton.gameObject.SetActive(
+                unlocked && category > selectedCategory
+            );
+
             ui.enterButton.interactable = unlocked;
 
             Image buttonImage = ui.enterButton.image;
@@ -407,6 +432,18 @@ public class PetManager : MonoBehaviour
                     selected ? selectedColor :
                     unlockedColor;
             }
+        }
+
+        // Imagen que bloquea la categoría.
+        if (ui.lockOverlay != null)
+        {
+            ui.lockOverlay.SetActive(!unlocked);
+        }
+
+        // Imagen que bloquea la categoría.
+        if (ui.lockOverlay != null)
+        {
+            ui.lockOverlay.SetActive(!unlocked);
         }
 
         // Los botones de compra y mejoras solo funcionan
@@ -479,12 +516,15 @@ public class PetManager : MonoBehaviour
             if (petObject == null)
                 continue;
 
-            bool shouldBeActive =
-                selected && pet < petsBought[category];
+            bool shouldBeActive = pet < petsBought[category];
+
+            if (petObject.activeSelf != shouldBeActive)
+                petObject.SetActive(shouldBeActive);
 
             if (petObject.activeSelf != shouldBeActive)
                 petObject.SetActive(shouldBeActive);
         }
+
     }
 
     private void SetButtonState(Button button, bool state)
@@ -571,7 +611,7 @@ public class PetManager : MonoBehaviour
 
         for (int i = 0; i < TOTAL_CATEGORIES - 1; i++)
         {
-            if (petsBought[i] < PETS_PER_CATEGORY)
+            if (!IsCategoryCompleted(i))
                 break;
 
             unlockedCategories = i + 2;

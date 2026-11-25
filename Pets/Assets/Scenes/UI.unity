@@ -498,6 +498,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65a7f7af7abb2a34593c1761ab1f57d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsUI
+--- !u!1 &549272359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 549272360}
+  m_Layer: 0
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &549272360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549272359}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 125.81728, y: 693.4673, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &599020548 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4057876738138597380, guid: 5874f956f8980134da592c3b1f10402e, type: 3}
@@ -1049,7 +1080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1921682102}
-  - component: {fileID: 1921682101}
+  - component: {fileID: 1921682103}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -1057,20 +1088,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1921682101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921682100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea31f4f5e49597640b87bb10ae260917, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Ale.Utility.Audio.AudioManager
-  _audioManagerData: {fileID: 11400000, guid: 83eec65fbb296ed4383c944c24c5dfe1, type: 2}
-  _soundNameTest: 
 --- !u!4 &1921682102
 Transform:
   m_ObjectHideFlags: 0
@@ -1086,6 +1103,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1921682103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1921682100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea31f4f5e49597640b87bb10ae260917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Dino.Utility.Audio.AudioManager
+  _audioManagerData: {fileID: 0}
+  _soundNameTest: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1097,3 +1128,4 @@ SceneRoots:
   - {fileID: 78671905}
   - {fileID: 32830769}
   - {fileID: 1921682102}
+  - {fileID: 549272360}
