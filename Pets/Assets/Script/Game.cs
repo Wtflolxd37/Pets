@@ -1,4 +1,5 @@
 using Dino.Utils;
+using Dino.Utility.Audio;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine;
@@ -86,6 +87,7 @@ public class Game : MonoBehaviour
 
             clickParticles.Play();
         }
+        AudioManager.Instance.PlaySound("Button");
 
         SaveProgress();
         UpdateUI();
@@ -180,7 +182,7 @@ public class Game : MonoBehaviour
 
     public void CambiarEscena(int nScenas)
     {
-
         SceneManager.LoadScene(nScenas);
+        AudioManager.Instance.PlaySound("Button");
     }
 }

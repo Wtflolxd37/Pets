@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Dino.Utility.Audio;
 
 public class PetManager : MonoBehaviour
 {
@@ -269,6 +270,7 @@ public class PetManager : MonoBehaviour
 
         speedLevels[category]++;
         CheckCategoryUnlock(category);
+        AudioManager.Instance.PlaySound("Button");
 
         SaveProgress();
         UpdateAllCategories();
@@ -292,6 +294,7 @@ public class PetManager : MonoBehaviour
 
         clickLevels[category]++;
         CheckCategoryUnlock(category);
+        AudioManager.Instance.PlaySound("Button");
 
         SaveProgress();
         UpdateAllCategories();
@@ -314,6 +317,7 @@ public class PetManager : MonoBehaviour
 
         incomeLevels[category]++;
         CheckCategoryUnlock(category);
+        AudioManager.Instance.PlaySound("Button");
 
         SaveProgress();
         UpdateAllCategories();
@@ -524,7 +528,7 @@ public class PetManager : MonoBehaviour
             if (petObject.activeSelf != shouldBeActive)
                 petObject.SetActive(shouldBeActive);
         }
-
+        AudioManager.Instance.PlaySound("Button");
     }
 
     private void SetButtonState(Button button, bool state)

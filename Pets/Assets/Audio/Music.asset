@@ -12,10 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3fd95c084ce03646954160a7da77fee, type: 3}
   m_Name: Music
   m_EditorClassIdentifier: Assembly-CSharp::Dino.Utility.Audio.AudioManagerData
-  _sfxAudioMixerGroup: {fileID: 0}
+  _sfxAudioMixerGroup: {fileID: -3995152008896415421, guid: 91fc087a7c305f542bd13625b2101587, type: 2}
   _sfxVolumeParameterName: SFXVolume
-  _musicAudioMixerGroup: {fileID: 0}
+  _musicAudioMixerGroup: {fileID: 1925889697716714443, guid: 91fc087a7c305f542bd13625b2101587, type: 2}
   _musicVolumeParameterName: MusicVolume
-  _ambienceAudioMixerGroup: {fileID: 0}
-  _ambienceVolumeParameterName: AmbienceVolume
-  audioData: []
+  _ambienceAudioMixerGroup: {fileID: 8433446472839717788, guid: 91fc087a7c305f542bd13625b2101587, type: 2}
+  _ambienceVolumeParameterName: AmbientVolume
+  audioData:
+  - name: Theme
+    clip: {fileID: 8300000, guid: b68438a4367245447bd6e82a67ab513b, type: 3}
+    loop: 1
+    volume: 1
+    pitch: 1
+    audioType: 0
+  - name: Button
+    clip: {fileID: 8300000, guid: a618d9428bbc97346ae886c9a4e4fce3, type: 3}
+    loop: 0
+    volume: 1
+    pitch: 1
+    audioType: 1

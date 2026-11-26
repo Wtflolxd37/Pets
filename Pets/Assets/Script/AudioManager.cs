@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using AudioType = Dino.Utility.Audio.AudioType;
 
 namespace Dino.Utility.Audio
@@ -29,6 +30,11 @@ namespace Dino.Utility.Audio
         [Header("Audio Test")]
         public string _soundNameTest;
 
+        [Header("Musica inicial")]
+        [SerializeField] private string _musicOnStart = "BackgroundMusic";
+
+        [SerializeField] private string _soundOnClick = "";
+
         #endregion
 
         #region private fields
@@ -50,21 +56,27 @@ namespace Dino.Utility.Audio
 
         #region unity methods
 
-        void Awake()
+        private void Awake()
         {
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
+
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
 
+            Initialize();
         }
 
         private void Start()
         {
-            Initialize();
+            LoadSavedVolumes();
+
+            if (!string.IsNullOrEmpty(_musicOnStart))
+                PlaySound(_musicOnStart);
         }
 
         private void Update()
@@ -73,6 +85,30 @@ namespace Dino.Utility.Audio
 
         }
 
+        public void LoadSavedVolumes()
+        {
+            float musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+            float sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+
+            Debug.Log("MUSIC GUARDADO: " + musicVolume);
+            Debug.Log("SFX GUARDADO: " + sfxVolume);
+
+            UpdateAudioMixerGroupVolume(musicVolume, AudioType.Music);
+            UpdateAudioMixerGroupVolume(sfxVolume, AudioType.SFX);
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            LoadSavedVolumes();
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this)
+            {
+                SceneManager.sceneLoaded -= OnSceneLoaded;
+            }
+        }
 
         #endregion
 
@@ -106,11 +142,18 @@ namespace Dino.Utility.Audio
             switch (audioType)
             {
                 case AudioType.Music:
+                    audioSource.outputAudioMixerGroup =
+                        _audioManagerData.MusicAudioMixerGroup;
                     break;
+
                 case AudioType.SFX:
-                    audioSource.outputAudioMixerGroup = _audioManagerData.SfxAudioMixerGroup;
+                    audioSource.outputAudioMixerGroup =
+                        _audioManagerData.SfxAudioMixerGroup;
                     break;
+
                 case AudioType.Ambience:
+                    audioSource.outputAudioMixerGroup =
+                        _audioManagerData.AmbienceAudioMixerGroup;
                     break;
             }
         }
@@ -168,21 +211,45 @@ namespace Dino.Utility.Audio
 
         public void UpdateAudioMixerGroupVolume(float value, AudioType audioType)
         {
-            float volume = value;
+            AudioMixerGroup group = null;
+            string parameter = "";
 
             switch (audioType)
             {
                 case AudioType.Music:
-                    _audioManagerData.MusicAudioMixerGroup.audioMixer.SetFloat(_audioManagerData.MusicVolumeParameterName, Mathf.Lerp(-80f, 20f, volume));
-                    break;
-                case AudioType.SFX:
-                    _audioManagerData.SfxAudioMixerGroup.audioMixer.SetFloat(_audioManagerData.SfxVolumeParameterName, Mathf.Lerp(-80f, 20f, volume));
-                    break;
-                case AudioType.Ambience:
-                    _audioManagerData.AmbienceAudioMixerGroup.audioMixer.SetFloat(_audioManagerData.AmbienceVolumeParameterName, Mathf.Lerp(-80f, 20f, volume));
+                    group = _audioManagerData.MusicAudioMixerGroup;
+                    parameter = _audioManagerData.MusicVolumeParameterName;
                     break;
 
+                case AudioType.SFX:
+                    group = _audioManagerData.SfxAudioMixerGroup;
+                    parameter = _audioManagerData.SfxVolumeParameterName;
+                    break;
+
+                case AudioType.Ambience:
+                    group = _audioManagerData.AmbienceAudioMixerGroup;
+                    parameter = _audioManagerData.AmbienceVolumeParameterName;
+                    break;
             }
+
+            if (group == null)
+            {
+                Debug.LogError("No se encontró el AudioMixerGroup de " + audioType);
+                return;
+            }
+
+            float volumeDB = value <= 0.0001f
+                ? -80f
+                : Mathf.Log10(value) * 20f;
+
+            bool success = group.audioMixer.SetFloat(parameter, volumeDB);
+
+            Debug.Log(
+                "AUDIO: " + audioType +
+                " | Valor: " + value +
+                " | Parámetro: " + parameter +
+                " | Resultado: " + success
+            );
         }
 
         #endregion
@@ -193,6 +260,11 @@ namespace Dino.Utility.Audio
             PlaySound(_soundNameTest);
             Debug.Log("Playing sound: " + _soundNameTest);
 
+        }
+
+        public void ButtonSound()
+        {
+            PlaySound(_soundOnClick);
         }
     }
 }
