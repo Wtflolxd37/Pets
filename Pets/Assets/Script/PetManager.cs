@@ -1,3 +1,4 @@
+
 using System;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,7 @@ using Dino.Utility.Audio;
 public class PetManager : MonoBehaviour
 {
     private const int TOTAL_CATEGORIES = 7;
-    private const int PETS_PER_CATEGORY = 7;
+    private const int PETS_PER_CATEGORY = 4;
     private const int MAX_UPGRADE_LEVEL = 5;
 
     [Serializable]
@@ -42,7 +43,7 @@ public class PetManager : MonoBehaviour
         public Image[] incomeDiamonds = new Image[5];
 
         [Header("Mascotas visuales")]
-        public GameObject[] petObjects = new GameObject[7];
+        public GameObject[] petObjects = new GameObject[4];
     }
 
     [Header("Referencias")]
@@ -67,8 +68,7 @@ public class PetManager : MonoBehaviour
         new Color(0.12f, 0.65f, 0.38f);
 
     [SerializeField]
-    private Color inactiveDiamondColor =
-        Color.gray;
+    private Color inactiveDiamondColor = Color.gray;
 
     [Header("Colores de categorias")]
     [SerializeField] private Color unlockedColor = Color.white;
@@ -109,10 +109,10 @@ public class PetManager : MonoBehaviour
             if (categories[i] == null)
                 categories[i] = new CategoryUI();
 
-            PrepareArray(ref categories[i].petObjects, 7);
-            PrepareArray(ref categories[i].speedDiamonds, 5);
-            PrepareArray(ref categories[i].clickDiamonds, 5);
-            PrepareArray(ref categories[i].incomeDiamonds, 5);
+            PrepareArray(ref categories[i].petObjects, PETS_PER_CATEGORY);
+            PrepareArray(ref categories[i].speedDiamonds, MAX_UPGRADE_LEVEL);
+            PrepareArray(ref categories[i].clickDiamonds, MAX_UPGRADE_LEVEL);
+            PrepareArray(ref categories[i].incomeDiamonds, MAX_UPGRADE_LEVEL);
         }
     }
 
@@ -190,6 +190,8 @@ public class PetManager : MonoBehaviour
         return category >= 0 && category < TOTAL_CATEGORIES;
     }
 
+    // Comprobar si una categoria esta completada.
+    // Necesita 4 mascotas y las 3 mejoras al nivel 5.
     private bool IsCategoryCompleted(int category)
     {
         return petsBought[category] >= PETS_PER_CATEGORY &&
@@ -198,23 +200,26 @@ public class PetManager : MonoBehaviour
                incomeLevels[category] >= MAX_UPGRADE_LEVEL;
     }
 
+    // Desbloquear la siguiente categoria.
     private void CheckCategoryUnlock(int category)
     {
-        if (category >= TOTAL_CATEGORIES - 1)
+        if (category < 0 || category >= TOTAL_CATEGORIES - 1)
             return;
 
-        if (IsCategoryCompleted(category))
-        {
-            unlockedCategories = Mathf.Max(
-                unlockedCategories,
-                category + 2
-            );
+        if (!IsCategoryCompleted(category))
+            return;
 
-            Debug.Log("¡Categoría " + (category + 2) + " desbloqueada!");
+        int nextUnlocked = category + 2;
 
-            SaveProgress();
-            UpdateAllCategories();
-        }
+        if (unlockedCategories >= nextUnlocked)
+            return;
+
+        unlockedCategories = nextUnlocked;
+
+        Debug.Log("¡Categoría " + nextUnlocked + " desbloqueada!");
+
+        SaveProgress();
+        UpdateAllCategories();
     }
 
     // Comprar la siguiente mascota de una categoria.
@@ -245,7 +250,12 @@ public class PetManager : MonoBehaviour
 
         petsBought[category]++;
 
-        // Desbloquear solamente la siguiente categoria.
+        Debug.Log(
+            "Mascotas compradas categoría " +
+            (category + 1) + ": " + petsBought[category] +
+            "/" + PETS_PER_CATEGORY
+        );
+
         CheckCategoryUnlock(category);
 
         SaveProgress();
@@ -269,8 +279,11 @@ public class PetManager : MonoBehaviour
             return;
 
         speedLevels[category]++;
+
         CheckCategoryUnlock(category);
-        AudioManager.Instance.PlaySound("Button");
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySound("Button");
 
         SaveProgress();
         UpdateAllCategories();
@@ -293,8 +306,11 @@ public class PetManager : MonoBehaviour
             return;
 
         clickLevels[category]++;
+
         CheckCategoryUnlock(category);
-        AudioManager.Instance.PlaySound("Button");
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySound("Button");
 
         SaveProgress();
         UpdateAllCategories();
@@ -316,8 +332,11 @@ public class PetManager : MonoBehaviour
             return;
 
         incomeLevels[category]++;
+
         CheckCategoryUnlock(category);
-        AudioManager.Instance.PlaySound("Button");
+
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlaySound("Button");
 
         SaveProgress();
         UpdateAllCategories();
@@ -418,59 +437,47 @@ public class PetManager : MonoBehaviour
         if (ui.lockOverlay != null)
             ui.lockOverlay.SetActive(!unlocked);
 
-        // Botón para entrar a la categoría.
+        // Boton para entrar a la categoria.
         if (ui.enterButton != null)
         {
-            ui.enterButton.gameObject.SetActive(
-                unlocked && category > selectedCategory
-            );
-
-            ui.enterButton.interactable = unlocked;
+            // Solo visible/activo mientras la categoría esté bloqueada
+            ui.enterButton.gameObject.SetActive(!unlocked);
+            ui.enterButton.interactable = false;
 
             Image buttonImage = ui.enterButton.image;
-
             if (buttonImage != null)
-            {
-                buttonImage.color =
-                    !unlocked ? lockedColor :
-                    selected ? selectedColor :
-                    unlockedColor;
-            }
+                buttonImage.color = lockedColor;
         }
 
-        // Imagen que bloquea la categoría.
-        if (ui.lockOverlay != null)
-        {
-            ui.lockOverlay.SetActive(!unlocked);
-        }
-
-        // Imagen que bloquea la categoría.
-        if (ui.lockOverlay != null)
-        {
-            ui.lockOverlay.SetActive(!unlocked);
-        }
-
-        // Los botones de compra y mejoras solo funcionan
-        // en la categoria desbloqueada que esta seleccionada.
+        // Botones de compra y mejoras.
         bool canUse = unlocked && selected;
 
-        SetButtonState(ui.buyPetButton,
-            canUse && petsBought[category] < PETS_PER_CATEGORY);
+        SetButtonState(
+            ui.buyPetButton,
+            canUse && petsBought[category] < PETS_PER_CATEGORY
+        );
 
-        SetButtonState(ui.speedButton,
-            canUse && speedLevels[category] < MAX_UPGRADE_LEVEL);
+        SetButtonState(
+            ui.speedButton,
+            canUse && speedLevels[category] < MAX_UPGRADE_LEVEL
+        );
 
-        SetButtonState(ui.clickButton,
-            canUse && clickLevels[category] < MAX_UPGRADE_LEVEL);
+        SetButtonState(
+            ui.clickButton,
+            canUse && clickLevels[category] < MAX_UPGRADE_LEVEL
+        );
 
-        SetButtonState(ui.incomeButton,
-            canUse && incomeLevels[category] < MAX_UPGRADE_LEVEL);
+        SetButtonState(
+            ui.incomeButton,
+            canUse && incomeLevels[category] < MAX_UPGRADE_LEVEL
+        );
 
-        // Textos de mascotas.
+        // Texto de mascotas.
         if (ui.petProgressText != null)
         {
             ui.petProgressText.text =
-                "Mascotas: " + petsBought[category] + " / 7";
+                "Mascotas: " + petsBought[category] +
+                " / " + PETS_PER_CATEGORY;
         }
 
         if (ui.petPriceText != null)
@@ -484,13 +491,16 @@ public class PetManager : MonoBehaviour
 
         // Textos de mejoras.
         UpdateUpgradeText(
-            ui.speedText, speedLevels[category], category, 100);
+            ui.speedText, speedLevels[category], category, 100
+        );
 
         UpdateUpgradeText(
-            ui.clickText, clickLevels[category], category, 75);
+            ui.clickText, clickLevels[category], category, 75
+        );
 
         UpdateUpgradeText(
-            ui.incomeText, incomeLevels[category], category, 100);
+            ui.incomeText, incomeLevels[category], category, 100
+        );
 
         // Colores de las imagenes.
         if (ui.speedImage != null)
@@ -502,15 +512,18 @@ public class PetManager : MonoBehaviour
         if (ui.incomeImage != null)
             ui.incomeImage.color = incomeColor;
 
-        // Rombos.
+        // Rombos de mejoras.
         UpdateDiamonds(
-            ui.speedDiamonds, speedLevels[category], speedColor);
+            ui.speedDiamonds, speedLevels[category], speedColor
+        );
 
         UpdateDiamonds(
-            ui.clickDiamonds, clickLevels[category], clickColor);
+            ui.clickDiamonds, clickLevels[category], clickColor
+        );
 
         UpdateDiamonds(
-            ui.incomeDiamonds, incomeLevels[category], incomeColor);
+            ui.incomeDiamonds, incomeLevels[category], incomeColor
+        );
 
         // Mascotas visuales.
         for (int pet = 0; pet < PETS_PER_CATEGORY; pet++)
@@ -524,11 +537,7 @@ public class PetManager : MonoBehaviour
 
             if (petObject.activeSelf != shouldBeActive)
                 petObject.SetActive(shouldBeActive);
-
-            if (petObject.activeSelf != shouldBeActive)
-                petObject.SetActive(shouldBeActive);
         }
-        AudioManager.Instance.PlaySound("Button");
     }
 
     private void SetButtonState(Button button, bool state)
@@ -598,29 +607,50 @@ public class PetManager : MonoBehaviour
         for (int i = 0; i < TOTAL_CATEGORIES; i++)
         {
             petsBought[i] = Mathf.Clamp(
-                PlayerPrefs.GetInt("Pets_" + i, 0), 0, 7);
+                PlayerPrefs.GetInt("Pets_" + i, 0),
+                0,
+                PETS_PER_CATEGORY
+            );
 
             speedLevels[i] = Mathf.Clamp(
-                PlayerPrefs.GetInt("Speed_" + i, 0), 0, 5);
+                PlayerPrefs.GetInt("Speed_" + i, 0),
+                0,
+                MAX_UPGRADE_LEVEL
+            );
 
             clickLevels[i] = Mathf.Clamp(
-                PlayerPrefs.GetInt("Click_" + i, 0), 0, 5);
+                PlayerPrefs.GetInt("Click_" + i, 0),
+                0,
+                MAX_UPGRADE_LEVEL
+            );
 
             incomeLevels[i] = Mathf.Clamp(
-                PlayerPrefs.GetInt("Income_" + i, 0), 0, 5);
+                PlayerPrefs.GetInt("Income_" + i, 0),
+                0,
+                MAX_UPGRADE_LEVEL
+            );
         }
 
-        // Calcular desbloqueos en orden.
-        unlockedCategories = 1;
+        // Conservar las categorias que ya estaban desbloqueadas.
+        unlockedCategories = Mathf.Clamp(
+            PlayerPrefs.GetInt("UnlockedCategories", 1),
+            1,
+            TOTAL_CATEGORIES
+        );
 
+        // Calcular nuevos desbloqueos en orden.
         for (int i = 0; i < TOTAL_CATEGORIES - 1; i++)
         {
             if (!IsCategoryCompleted(i))
                 break;
 
-            unlockedCategories = i + 2;
+            unlockedCategories = Mathf.Max(
+                unlockedCategories,
+                i + 2
+            );
         }
 
+        // Seleccionar una categoria que este desbloqueada.
         selectedCategory = Mathf.Clamp(
             PlayerPrefs.GetInt("SelectedCategory", 0),
             0,
