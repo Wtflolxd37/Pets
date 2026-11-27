@@ -1,4 +1,3 @@
-
 using System;
 using TMPro;
 using UnityEngine;
@@ -16,6 +15,9 @@ public class PetManager : MonoBehaviour
     {
         [Header("Interfaz de categoria")]
         public GameObject lockOverlay;
+
+        // Ya no se usa, pero se conserva para no perder la referencia
+        // en el Inspector. Se mantiene siempre oculto.
         public Button enterButton;
 
         [Header("Compra de mascotas")]
@@ -70,17 +72,11 @@ public class PetManager : MonoBehaviour
     [SerializeField]
     private Color inactiveDiamondColor = Color.gray;
 
-    [Header("Colores de categorias")]
-    [SerializeField] private Color unlockedColor = Color.white;
-    [SerializeField] private Color lockedColor = Color.gray;
-    [SerializeField] private Color selectedColor = Color.green;
-
     private int[] petsBought = new int[TOTAL_CATEGORIES];
     private int[] speedLevels = new int[TOTAL_CATEGORIES];
     private int[] clickLevels = new int[TOTAL_CATEGORIES];
     private int[] incomeLevels = new int[TOTAL_CATEGORIES];
 
-    private int selectedCategory = 0;
     private int unlockedCategories = 1;
 
     private void Awake()
@@ -133,13 +129,6 @@ public class PetManager : MonoBehaviour
             int category = i;
             CategoryUI ui = categories[i];
 
-            if (ui.enterButton != null)
-            {
-                ui.enterButton.onClick.AddListener(
-                    () => SelectCategory(category)
-                );
-            }
-
             if (ui.buyPetButton != null)
             {
                 ui.buyPetButton.onClick.AddListener(
@@ -168,21 +157,6 @@ public class PetManager : MonoBehaviour
                 );
             }
         }
-    }
-
-    // Entrar a una categoria.
-    public void SelectCategory(int category)
-    {
-        if (!IsValidCategory(category))
-            return;
-
-        if (category >= unlockedCategories)
-            return;
-
-        selectedCategory = category;
-
-        SaveProgress();
-        UpdateAllCategories();
     }
 
     private bool IsValidCategory(int category)
@@ -228,9 +202,6 @@ public class PetManager : MonoBehaviour
         if (!IsValidCategory(category))
             return;
 
-        if (category != selectedCategory)
-            return;
-
         if (category >= unlockedCategories)
             return;
 
@@ -246,7 +217,10 @@ public class PetManager : MonoBehaviour
         int cost = GetPetCost(category, petsBought[category]);
 
         if (!game.TrySpendCoins(cost))
+        {
+            Debug.Log("No alcanzan las monedas para la mascota. Costo: " + cost);
             return;
+        }
 
         petsBought[category]++;
 
@@ -276,7 +250,10 @@ public class PetManager : MonoBehaviour
         );
 
         if (game == null || !game.TrySpendCoins(cost))
+        {
+            Debug.Log("No alcanzan las monedas (velocidad). Costo: " + cost);
             return;
+        }
 
         speedLevels[category]++;
 
@@ -303,7 +280,10 @@ public class PetManager : MonoBehaviour
         );
 
         if (game == null || !game.TrySpendCoins(cost))
+        {
+            Debug.Log("No alcanzan las monedas (clic). Costo: " + cost);
             return;
+        }
 
         clickLevels[category]++;
 
@@ -329,7 +309,10 @@ public class PetManager : MonoBehaviour
         );
 
         if (game == null || !game.TrySpendCoins(cost))
+        {
+            Debug.Log("No alcanzan las monedas (ingresos). Costo: " + cost);
             return;
+        }
 
         incomeLevels[category]++;
 
@@ -345,9 +328,6 @@ public class PetManager : MonoBehaviour
     private bool CanUpgrade(int category, int[] levels)
     {
         if (!IsValidCategory(category))
-            return false;
-
-        if (category != selectedCategory)
             return false;
 
         if (category >= unlockedCategories)
@@ -431,26 +411,17 @@ public class PetManager : MonoBehaviour
         CategoryUI ui = categories[category];
 
         bool unlocked = category < unlockedCategories;
-        bool selected = category == selectedCategory;
 
         // Overlay oscuro.
         if (ui.lockOverlay != null)
             ui.lockOverlay.SetActive(!unlocked);
 
-        // Boton para entrar a la categoria.
+        // Boton de entrar: ya no se usa, siempre oculto.
         if (ui.enterButton != null)
-        {
-            // Solo visible/activo mientras la categoría esté bloqueada
-            ui.enterButton.gameObject.SetActive(!unlocked);
-            ui.enterButton.interactable = false;
+            ui.enterButton.gameObject.SetActive(false);
 
-            Image buttonImage = ui.enterButton.image;
-            if (buttonImage != null)
-                buttonImage.color = lockedColor;
-        }
-
-        // Botones de compra y mejoras.
-        bool canUse = unlocked && selected;
+        // Botones de compra y mejoras: basta con que este desbloqueada.
+        bool canUse = unlocked;
 
         SetButtonState(
             ui.buyPetButton,
@@ -484,7 +455,7 @@ public class PetManager : MonoBehaviour
         {
             ui.petPriceText.text =
                 petsBought[category] >= PETS_PER_CATEGORY
-                ? "Categoria completada"
+                ? "Mascotas completas"
                 : "Precio: " +
                   GetPetCost(category, petsBought[category]);
         }
@@ -595,7 +566,6 @@ public class PetManager : MonoBehaviour
             PlayerPrefs.SetInt("Income_" + i, incomeLevels[i]);
         }
 
-        PlayerPrefs.SetInt("SelectedCategory", selectedCategory);
         PlayerPrefs.SetInt("UnlockedCategories", unlockedCategories);
 
         PlayerPrefs.Save();
@@ -649,13 +619,6 @@ public class PetManager : MonoBehaviour
                 i + 2
             );
         }
-
-        // Seleccionar una categoria que este desbloqueada.
-        selectedCategory = Mathf.Clamp(
-            PlayerPrefs.GetInt("SelectedCategory", 0),
-            0,
-            unlockedCategories - 1
-        );
 
         SaveProgress();
     }
